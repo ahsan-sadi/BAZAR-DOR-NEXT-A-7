@@ -29,9 +29,12 @@ const SignInForm = () => {
     console.log(data);
   };
 
-  const handleSocial = (provider) => {
+  const handleSocial = async (provider) => {
     // TODO (better-auth): authClient.signIn.social({ provider })
-    console.log(provider);
+    const data = await authClient.signIn.social({
+      provider: provider,
+    });
+    console.log(data);
   };
 
   return (

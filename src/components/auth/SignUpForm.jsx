@@ -31,8 +31,11 @@ const SignUpForm = () => {
     console.log(data);
   };
 
-  const handleSocial = (provider) => {
-    console.log(provider);
+  const handleSocial = async (provider) => {
+    const data = await authClient.signIn.social({
+      provider: provider,
+    });
+    console.log(data);
   };
 
   return (
