@@ -11,8 +11,6 @@ let today = new Date().toLocaleDateString("bn-BD", {
   dateStyle: "full",
 });
 
-console.log(today);
-
 const Navbar = () => {
   return (
     <div className="">
