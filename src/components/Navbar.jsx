@@ -5,6 +5,7 @@ import Logo from "@/assets/logo.png";
 import NavLinks from "./NavLinks";
 import Marquee from "./Marquee";
 import HeaderAuth from "./HeaderAuth";
+import { connection } from "next/server";
 
 const NavSkeleton = () => (
   <div className="container mx-auto px-4 py-4 flex gap-2" aria-hidden="true">
@@ -14,7 +15,8 @@ const NavSkeleton = () => (
   </div>
 );
 
-const Navbar = () => {
+const Navbar = async () => {
+  await connection();
   const today = new Date().toLocaleDateString("bn-BD", { dateStyle: "full" });
 
   return (
@@ -34,7 +36,6 @@ const Navbar = () => {
           </div>
         </Link>
 
-        {/* the only part that needs the client-side session */}
         <HeaderAuth />
       </div>
 

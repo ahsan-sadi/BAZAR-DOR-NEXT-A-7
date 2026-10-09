@@ -1,34 +1,17 @@
 import { notFound } from "next/navigation";
 import CategoryProducts from "@/components/CategoryProducts";
 import { toBn } from "@/lib/format";
+import { getCategories, getProducts } from "@/lib/api";
 
-const API = "https://api.api-store.workers.dev/api/bazardor";
-
-const getJson = async (path) => {
-  const res = await fetch(`${API}/${path}`, { next: { revalidate: 300 } });
-  if (!res.ok) throw new Error(`Failed to fetch ${path}`);
-  const json = await res.json();
-  return Array.isArray(json) ? json : (json.data ?? []);
-};
-
-const getCategory = async (slug) => {
-  const categories = await getJson("categories");
-  return categories.find((c) => c.slug === slug) ?? null;
-};
-
-// pre-build every category page
 export async function generateStaticParams() {
-  try {
-    const categories = await getJson("categories");
-    return categories.map((c) => ({ slug: c.slug }));
-  } catch {
-    return [];
-  }
+  const categories = await getCategories();
+  return categories.map((c) => ({ slug: c.slug }));
 }
 
 export async function generateMetadata({ params }) {
   const { slug } = await params;
-  const category = await getCategory(slug).catch(() => null);
+  const categories = await getCategories().catch(() => []);
+  const category = categories.find((c) => c.slug === slug);
   return {
     title: category ? `${category.nameBn} — আজকের বাজার দর` : "বাজার দর",
   };
@@ -37,11 +20,11 @@ export async function generateMetadata({ params }) {
 const CategoryPage = async ({ params }) => {
   const { slug } = await params;
 
-  let category, products;
+  let categories, products;
   try {
-    [category, products] = await Promise.all([
-      getCategory(slug),
-      getJson("products"),
+    [categories, products] = await Promise.all([
+      getCategories(),
+      getProducts(),
     ]);
   } catch {
     return (
@@ -51,13 +34,13 @@ const CategoryPage = async ({ params }) => {
     );
   }
 
+  const category = categories.find((c) => c.slug === slug);
   if (!category) notFound();
 
   const items = products.filter((p) => p.category === category.id);
 
   return (
     <div className="container mx-auto px-4 my-7.5 space-y-4">
-      {/* title card */}
       <section className="flex items-center gap-4 p-4 sm:p-5 rounded-xl border border-border bg-white">
         <div
           className="bg-border size-12 sm:size-14 shrink-0 rounded-full flex items-center justify-center text-2xl sm:text-3xl"
