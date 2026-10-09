@@ -13,18 +13,20 @@ import {
 } from "@heroui/react";
 import PasswordField from "./PasswordField";
 import SocialButtons from "./SocialButtons";
+import { authClient } from "@/lib/auth-client";
 
 const SignInForm = () => {
   const [pending, setPending] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const values = Object.fromEntries(new FormData(e.currentTarget));
-    // TODO (better-auth):
-    // setPending(true);
-    // await authClient.signIn.email({ email: values.email, password: values.password });
-    // setPending(false);
-    console.log(values);
+    const { data, error } = await authClient.signIn.email({
+      email: values.email,
+      password: values.password,
+      // callbackURL: "https://example.com/callback",
+    });
+    console.log(data);
   };
 
   const handleSocial = (provider) => {
