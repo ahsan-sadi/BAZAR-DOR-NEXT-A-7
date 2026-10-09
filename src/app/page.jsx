@@ -1,9 +1,12 @@
+import Hero from "@/components/Hero";
+import Product from "@/components/Product";
 import Image from "next/image";
 
 export default function Home() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <h1>আজকের বাজারের দাম এক নজরে</h1>
+    <div className="bg-border">
+      <Hero />
+      <Product />
     </div>
   );
 }
