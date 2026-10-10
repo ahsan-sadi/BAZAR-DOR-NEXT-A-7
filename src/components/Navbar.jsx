@@ -5,7 +5,6 @@ import Logo from "@/assets/logo.png";
 import NavLinks from "./NavLinks";
 import Marquee from "./Marquee";
 import HeaderAuth from "./HeaderAuth";
-import { connection } from "next/server";
 
 const NavSkeleton = () => (
   <div className="container mx-auto px-4 py-4 flex gap-2" aria-hidden="true">
@@ -15,9 +14,14 @@ const NavSkeleton = () => (
   </div>
 );
 
+// Cache the date evaluation so Next.js treats it as static during prerender
+async function getFormattedDate() {
+  "use cache";
+  return new Date().toLocaleDateString("bn-BD", { dateStyle: "full" });
+}
+
 const Navbar = async () => {
-  await connection();
-  const today = new Date().toLocaleDateString("bn-BD", { dateStyle: "full" });
+  const today = await getFormattedDate();
 
   return (
     <header>
