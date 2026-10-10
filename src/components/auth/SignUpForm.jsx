@@ -14,21 +14,34 @@ import {
 import PasswordField from "./PasswordField";
 import SocialButtons from "./SocialButtons";
 import { authClient } from "@/lib/auth-client";
+import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
 
 const SignUpForm = () => {
   const [password, setPassword] = useState("");
   const [pending, setPending] = useState(false);
+  const router = useRouter();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const values = Object.fromEntries(new FormData(e.currentTarget));
+
+    setPending(true);
     const { data, error } = await authClient.signUp.email({
-      name: values.name, // required, The name of the user.
+      name: values.name,
       email: values.email,
       password: values.password,
-      callbackURL: "/",
+      // no callbackURL: it is not used here
     });
-    console.log(data);
+    setPending(false);
+
+    if (error) {
+      toast.error(error.message || "রেজিস্ট্রেশন করা যায়নি");
+      return;
+    }
+
+    toast.success("রেজিস্ট্রেশন সফল হয়েছে!");
+    router.push("/");
   };
 
   const handleSocial = async (provider) => {

@@ -14,6 +14,7 @@ import {
 import PasswordField from "./PasswordField";
 import SocialButtons from "./SocialButtons";
 import { authClient } from "@/lib/auth-client";
+import { toast } from "react-toastify";
 
 const SignInForm = () => {
   const [pending, setPending] = useState(false);
@@ -26,7 +27,13 @@ const SignInForm = () => {
       password: values.password,
       callbackURL: "/",
     });
-    console.log(data);
+    if (data) {
+      toast.success("Successfully LogIn");
+    }
+    if (error) {
+      toast.error(error.message);
+    }
+    console.log(error);
   };
 
   const handleSocial = async (provider) => {

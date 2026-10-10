@@ -57,27 +57,29 @@ const CategoryContent = async ({ params }) => {
   const items = products.filter((p) => p.category === category.id);
 
   return (
-    <div className="container mx-auto px-4 my-7.5 space-y-4">
-      {/* title card */}
-      <section className="flex items-center gap-4 p-4 sm:p-5 rounded-xl border border-border bg-white">
-        <div
-          className="img bg-border size-12 sm:size-14 shrink-0 rounded-full flex items-center justify-center text-2xl sm:text-3xl"
-          aria-hidden="true"
-        >
-          {category.icon}
-        </div>
-        <div className="text min-w-0">
-          <h1 className="text-heading font-bold text-xl sm:text-2xl leading-8">
-            {category.nameBn}
-          </h1>
-          <p className="text-[12px] sm:text-sm font-semibold leading-5 text-gray-500">
-            এই {toBn(items.length)}টি পণ্যের আজকের দাম ও পরিবর্তন
-          </p>
-        </div>
-      </section>
+    <div className="bg-border">
+      <div className="container mx-auto px-4 my-7.5 space-y-4">
+        {/* title card */}
+        <section className="flex items-center gap-4 p-4 sm:p-5 rounded-xl border border-border bg-white">
+          <div
+            className="img bg-border size-12 sm:size-14 shrink-0 rounded-full flex items-center justify-center text-2xl sm:text-3xl"
+            aria-hidden="true"
+          >
+            {category.icon}
+          </div>
+          <div className="text min-w-0">
+            <h1 className="text-heading font-bold text-xl sm:text-2xl leading-8">
+              {category.nameBn}
+            </h1>
+            <p className="text-[12px] sm:text-sm font-semibold leading-5 text-gray-500">
+              এই {toBn(items.length)}টি পণ্যের আজকের দাম ও পরিবর্তন
+            </p>
+          </div>
+        </section>
 
-      {/* sort bar + count + grid */}
-      <CategoryProducts products={items} />
+        {/* sort bar + count + grid */}
+        <CategoryProducts products={items} />
+      </div>
     </div>
   );
 };

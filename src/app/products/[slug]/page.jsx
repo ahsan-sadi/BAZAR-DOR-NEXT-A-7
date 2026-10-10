@@ -74,121 +74,123 @@ const ProductContent = async ({ params }) => {
   const { rows, lowest, highest, average } = buildMarketStats(product.markets);
 
   return (
-    <div className="container mx-auto px-4 my-7.5 space-y-6">
-      {/* breadcrumb */}
-      <nav aria-label="breadcrumb">
-        <ol className="flex flex-wrap items-center gap-1.5 text-[12px] sm:text-sm text-gray-500">
-          <li>
-            <Link href="/" className="hover:text-heading">
-              হোম
-            </Link>
-          </li>
-          <ChevronRight className="size-3.5" aria-hidden="true" />
-          <li>
-            <Link
-              href={`/category/${product.category}`}
-              className="hover:text-heading"
-            >
-              {product.categoryNameBn}
-            </Link>
-          </li>
-          <ChevronRight className="size-3.5" aria-hidden="true" />
-          <li aria-current="page" className="font-semibold text-heading">
-            {product.nameBn}
-          </li>
-        </ol>
-      </nav>
-
-      {/* product header */}
-      <section className="flex flex-col sm:flex-row sm:items-center justify-between gap-5 p-4 sm:p-6 rounded-xl border border-border bg-white">
-        <div className="flex items-center gap-4 sm:gap-5 min-w-0">
-          <div
-            className="bg-border size-16 sm:size-20 shrink-0 rounded-2xl flex items-center justify-center text-4xl sm:text-5xl"
-            aria-hidden="true"
-          >
-            {product.image}
-          </div>
-          <div className="min-w-0">
-            <h1 className="text-2xl sm:text-3xl font-bold text-heading leading-tight">
+    <div className="bg-border">
+      <div className="container mx-auto px-4 my-7.5 space-y-6">
+        {/* breadcrumb */}
+        <nav aria-label="breadcrumb">
+          <ol className="flex flex-wrap items-center gap-1.5 text-[12px] sm:text-sm text-gray-500">
+            <li>
+              <Link href="/" className="hover:text-heading">
+                হোম
+              </Link>
+            </li>
+            <ChevronRight className="size-3.5" aria-hidden="true" />
+            <li>
+              <Link
+                href={`/category/${product.category}`}
+                className="hover:text-heading"
+              >
+                {product.categoryNameBn}
+              </Link>
+            </li>
+            <ChevronRight className="size-3.5" aria-hidden="true" />
+            <li aria-current="page" className="font-semibold text-heading">
               {product.nameBn}
-            </h1>
-            <p className="text-[12px] sm:text-sm text-gray-500 mt-1">
-              প্রতি {unit} · {product.categoryNameBn}
-            </p>
-            <p className="text-[12px] sm:text-sm text-gray-500 mt-2">
-              {diff === 0 ? (
-                "গতকালের তুলনায় আজ দাম অপরিবর্তিত"
-              ) : (
-                <>
-                  গতকালের তুলনায় আজ দাম{" "}
-                  <span className={`font-bold ${trend.text}`}>
-                    {trend.word}
-                  </span>
-                  {" · "}
-                  {toBn(diff)} টাকা
-                </>
-              )}
-            </p>
+            </li>
+          </ol>
+        </nav>
+
+        {/* product header */}
+        <section className="flex flex-col sm:flex-row sm:items-center justify-between gap-5 p-4 sm:p-6 rounded-xl border border-border bg-white">
+          <div className="flex items-center gap-4 sm:gap-5 min-w-0">
+            <div
+              className="bg-border size-16 sm:size-20 shrink-0 rounded-2xl flex items-center justify-center text-4xl sm:text-5xl"
+              aria-hidden="true"
+            >
+              {product.image}
+            </div>
+            <div className="min-w-0">
+              <h1 className="text-2xl sm:text-3xl font-bold text-heading leading-tight">
+                {product.nameBn}
+              </h1>
+              <p className="text-[12px] sm:text-sm text-gray-500 mt-1">
+                প্রতি {unit} · {product.categoryNameBn}
+              </p>
+              <p className="text-[12px] sm:text-sm text-gray-500 mt-2">
+                {diff === 0 ? (
+                  "গতকালের তুলনায় আজ দাম অপরিবর্তিত"
+                ) : (
+                  <>
+                    গতকালের তুলনায় আজ দাম{" "}
+                    <span className={`font-bold ${trend.text}`}>
+                      {trend.word}
+                    </span>
+                    {" · "}
+                    {toBn(diff)} টাকা
+                  </>
+                )}
+              </p>
+            </div>
           </div>
-        </div>
 
-        <div className="shrink-0 rounded-xl bg-border/60 px-6 py-4 text-center">
-          <p className="text-[12px] text-gray-500">আজকের দাম</p>
-          <p className="text-4xl font-bold text-heading leading-tight">
-            {toBn(product.today)}
-          </p>
-          <p className="text-[12px] text-gray-500">টাকা / {unit}</p>
-          <span
-            className={`mt-2 inline-flex items-center gap-0.5 rounded-full px-2 py-0.5 text-[12px] font-semibold ${trend.text} ${trend.bg}`}
-          >
-            <TrendIcon className="size-3" />
-            {formatPct(product.change.pct)}
-          </span>
-        </div>
-      </section>
-
-      {/* summary */}
-      {rows.length > 0 && (
-        <section className="p-4 sm:p-6 rounded-xl border border-border bg-white">
-          <h2 className="text-base sm:text-lg font-bold text-heading mb-4">
-            দামের সারসংক্ষেপ
-          </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            <SummaryCard
-              label="সর্বনিম্ন দাম"
-              value={formatTaka(lowest.min)}
-              valueClass="text-success"
-              note={`সবচেয়ে কম দামের বাজার: ${lowest.market}`}
-            />
-            <SummaryCard
-              label="সর্বোচ্চ দাম"
-              value={formatTaka(highest.max)}
-              valueClass="text-error"
-              note={`সবচেয়ে বেশি দামের বাজার: ${highest.market}`}
-            />
-            <SummaryCard
-              label="গড় দাম"
-              value={formatTaka(average)}
-              valueClass="text-heading"
-              note={`প্রতি ${unit} এর হিসাবে`}
-            />
+          <div className="shrink-0 rounded-xl bg-border/60 px-6 py-4 text-center">
+            <p className="text-[12px] text-gray-500">আজকের দাম</p>
+            <p className="text-4xl font-bold text-heading leading-tight">
+              {toBn(product.today)}
+            </p>
+            <p className="text-[12px] text-gray-500">টাকা / {unit}</p>
+            <span
+              className={`mt-2 inline-flex items-center gap-0.5 rounded-full px-2 py-0.5 text-[12px] font-semibold ${trend.text} ${trend.bg}`}
+            >
+              <TrendIcon className="size-3" />
+              {formatPct(product.change.pct)}
+            </span>
           </div>
         </section>
-      )}
 
-      {/* market table */}
-      <section className="p-4 sm:p-6 rounded-xl border border-border bg-white">
-        <h2 className="text-base sm:text-lg font-bold text-heading mb-4">
-          বাজারভিত্তিক আজকের দাম
-        </h2>
-        {rows.length > 0 ? (
-          <MarketTable rows={rows} />
-        ) : (
-          <p className="text-center text-gray-500 py-10">
-            এই পণ্যের বাজারভিত্তিক দাম পাওয়া যায়নি।
-          </p>
+        {/* summary */}
+        {rows.length > 0 && (
+          <section className="p-4 sm:p-6 rounded-xl border border-border bg-white">
+            <h2 className="text-base sm:text-lg font-bold text-heading mb-4">
+              দামের সারসংক্ষেপ
+            </h2>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <SummaryCard
+                label="সর্বনিম্ন দাম"
+                value={formatTaka(lowest.min)}
+                valueClass="text-success"
+                note={`সবচেয়ে কম দামের বাজার: ${lowest.market}`}
+              />
+              <SummaryCard
+                label="সর্বোচ্চ দাম"
+                value={formatTaka(highest.max)}
+                valueClass="text-error"
+                note={`সবচেয়ে বেশি দামের বাজার: ${highest.market}`}
+              />
+              <SummaryCard
+                label="গড় দাম"
+                value={formatTaka(average)}
+                valueClass="text-heading"
+                note={`প্রতি ${unit} এর হিসাবে`}
+              />
+            </div>
+          </section>
         )}
-      </section>
+
+        {/* market table */}
+        <section className="p-4 sm:p-6 rounded-xl border border-border bg-white">
+          <h2 className="text-base sm:text-lg font-bold text-heading mb-4">
+            বাজারভিত্তিক আজকের দাম
+          </h2>
+          {rows.length > 0 ? (
+            <MarketTable rows={rows} />
+          ) : (
+            <p className="text-center text-gray-500 py-10">
+              এই পণ্যের বাজারভিত্তিক দাম পাওয়া যায়নি।
+            </p>
+          )}
+        </section>
+      </div>
     </div>
   );
 };
