@@ -1,6 +1,6 @@
 import { cacheLife } from "next/cache";
 
-const API = "https://api.api-store.workers.dev/api/bazardor";
+const API = "https://openapi.programming-hero.com/api/bazardor";
 
 const unwrap = (json) => (Array.isArray(json) ? json : (json.data ?? []));
 
