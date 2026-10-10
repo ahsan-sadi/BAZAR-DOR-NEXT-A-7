@@ -26,7 +26,7 @@ const SignUpForm = () => {
       name: values.name, // required, The name of the user.
       email: values.email,
       password: values.password,
-      // callbackURL: "https://example.com/callback",
+      callbackURL: "/",
     });
     console.log(data);
   };
